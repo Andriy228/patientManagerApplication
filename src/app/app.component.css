@@ -1,0 +1,60 @@
+@import 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css';
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';
+
+.container-fluid-sm{
+    border: 3px solid blue;
+    margin:20px;
+    height: 95vh;
+    position: relative;
+}
+
+.row{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+#listPatient{
+    margin-top: 10px;
+}
+
+ul.nav.nav-pills.nav-stacked.anyClass{
+    padding-right: 5px;
+    display: block;   
+}
+
+.anyClass {
+    height: 65vh;
+    overflow-y: scroll;
+  }
+
+#head1{
+    text-align: end;
+    padding-top: 10px;
+    width: auto;
+    height: 10vh;
+}
+
+.border-right {
+    border-right: 2px solid #dee2e6!important;
+}
+.border-bottom{
+    border-bottom: 2px solid #dee2e6!important;
+}
+p,
+label {
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+#showPatientBody p{
+    font-weight: 600;
+}
+
+#addComms{
+display: flex;
+}
+#addComms .form-group{   
+position: relative;
+width:100%;
+}
+.anyClass p{
+    font-weight: 600;
+}

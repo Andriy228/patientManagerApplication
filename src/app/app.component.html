@@ -1,0 +1,201 @@
+<div class="container-fluid-sm">
+  <div id="head1" class="row align-items-start border-bottom">
+    <div class="col-3 d-flex border-right">
+      <div class="col-6">
+           <input type="search" (ngModelChange)="searchPatients(key.value)" #key="ngModel" ngModel
+            name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search..." required>
+      </div>
+      <div class="col-6">
+        <button class="btn btn-primary" id="addPatient" (click)="showAddPatientBody()" type="submit">Add Patient</button>
+      </div>
+     </div>
+    <div class="col-9 d-flex">
+      <ng-container [ngTemplateOutlet]="getMethodViewPatientHead">
+
+      </ng-container>
+     
+    </div>
+  </div>
+  <div id="listPatient" class="row">
+    <div class="col-3 border-right">
+      <ul class="nav nav-pills nav-stacked anyClass">
+        <li *ngFor="let patient of patients" class="nav-item">
+          <a id="listPatientBody" (click)="showInfoPatientBody(patient)" class="nav-link" href="#">{{patient.firstName + " " +patient.lastName}}
+          </a>
+        </li>
+      </ul>
+    </div>  
+    <div id="patientInformation" class="col-9 d-flex">
+      <ng-container [ngTemplateOutlet]="getMethodViewPatientBody">
+
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #showPatientHead >
+  <div class="col-4 d-flex">
+    <h4>{{GetCasePatient().firstName + " " + GetCasePatient().lastName}}</h4>
+  </div>
+  <div class="col-4">
+    <h5>Years: {{GetCasePatient().years}}</h5>
+  </div>
+  <div class="col-4">
+    <button (click)="showEditPatientBody(GetCasePatient())" class="btn btn-success" style="margin-right: 10px;">Edit</button>
+    <button (click)="onOpenModalDelete(GetCasePatient());" class="btn btn-danger" data-original-title="Delete">Delete</button>
+  </div>
+</ng-template>
+
+<ng-template #showPatientBody >
+<div id="showPatientBody" class="col-3">
+  <p>Date of Birth: {{GetCasePatient().dateOfBirth}}</p>
+  <p>Sex: {{GetCasePatient().sex}}</p>
+  <p>Country: {{GetCasePatient().country}}</p>   
+  <p>State: {{GetCasePatient().state}}</p>
+  <p>Address: {{GetCasePatient().address}}</p>
+</div>
+  <div *ngIf="patients.length" class="col-9">
+    <div *ngIf="GetCasePatient().comments.length" class="anyClass">
+      <div *ngFor="let cm of GetCasePatient().comments">
+        <span>{{cm.date}}</span>
+        <p>{{cm.commBody}}</p>
+      </div>
+    </div>
+    <div *ngIf="!GetCasePatient().comments.length">
+      No comments!!!
+    </div>
+    <form  #addForm="ngForm" (ngSubmit)="onAddComment(GetCasePatient().id,addForm)" class="my-3">
+      <div id="addComms"> 
+        <div class="form-group">
+          <input type="text" ngModel name="commBody" class="form-control " id="commBodyInput" placeholder="CommBody" required>
+         </div>
+        <div >
+         <button id="addCommentButton" [disabled]="addForm.invalid" type="submit" class="btn btn-primary mx-2 w-100" >+</button>
+        </div>
+      </div>
+      </form>    
+  </div>
+  
+</ng-template>
+
+<ng-template #addPatientHead>
+  <div class="col-12">
+    <h4 style="text-align: center;">Add New Patient</h4>
+  </div>
+  </ng-template>
+
+  
+<ng-template #addPatientBody>
+  <div class="col-12">
+  <form #addForm="ngForm" (ngSubmit)="onAddPatient(addForm)" class="anyClass">
+    <div class="form-group">
+       <label for="firstName">First Name</label>
+       <input type="text" ngModel name="firstName" class="form-control" id="firstName" placeholder="FirstName" required>
+    </div>
+    <div class="form-group">
+       <label for="lastName">Last Name</label>
+       <input type="text" ngModel name="lastName" class="form-control" id="lastName" placeholder="LastName" required>
+    </div>
+    <div class="form-group">
+       <label for="dateOfBirth">Date of birth</label>
+       <input type="date" ngModel name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="Date of birth" required>
+    </div>
+    <div class="form-group">
+      <label for="sex">Sex</label>
+      <input type="sex" ngModel name="sex" class="form-control" id="sex" placeholder="Sex" required>
+    </div>
+    <div class="form-group">
+       <label for="country">Country</label>
+       <input type="text" ngModel name="country" class="form-control" id="country" placeholder="Country" required>
+    </div>
+    <div class="form-group">
+      <label for="state">State</label>
+      <input type="text" ngModel name="state" class="form-control" id="state" placeholder="State" required>
+   </div>
+   <div class="form-group">
+    <label for="address">Address</label>
+    <input type="text" ngModel name="address" class="form-control" id="address" placeholder="Address" required>
+ </div>
+ <div class="form-group">
+  <label for="years">Years</label>
+  <input type="text" ngModel name="years" class="form-control" id="years" placeholder="Years" required>
+</div>
+    <div class="modal-footer">
+       <button (click)="showInfoPatientBody(GetCasePatient())"  type="button" id="add-patient-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       <button id="addPatientButton"  [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+    </div>
+    </form>
+  </div>
+ </ng-template>
+
+
+ <ng-template #editPatientHead>
+  <div class="col-12">
+    <h4 style="text-align: center;">Edit Patient</h4>
+  </div>
+  </ng-template>
+
+ <ng-template #editPatientBody>
+  <div class="modal-body">
+    <form #editForm="ngForm" class="anyClass">
+       <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input type="text" ngModel="{{editPatient?.firstName}}" name="firstName" class="form-control" id="firstName"  placeholder="First Name">
+       </div>
+       <input type="hidden" ngModel="{{editPatient?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+       <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input type="text" ngModel="{{editPatient?.lastName}}" name="lastName" class="form-control" id="lastName" placeholder="Last Name">
+       </div>
+       <div class="form-group">
+          <label for="dateOfBirth">Date of birth</label>
+          <input type="date" ngModel="{{editPatient?.dateOfBirth}}" name="dateOfBirth" class="form-control" id="dateOfBirth" placeholder="Date of birth">
+       </div>
+       <div class="form-group">
+          <label for="sex">Sex</label>       
+          <input type="text" ngModel="{{editPatient?.sex}}" name="sex" class="form-control" id="sex" name="sex" placeholder="Sex">
+       </div>
+       <div class="form-group">
+          <label for="country">Country</label>
+          <input type="text" ngModel="{{editPatient?.country}}" name="country" class="form-control" id="country" placeholder="Country">
+       </div>
+       <div class="form-group">
+        <label for="state">State</label>
+        <input type="text" ngModel="{{editPatient?.state}}" name="state" class="form-control" id="state" placeholder="State">
+     </div>
+      <div class="form-group">
+       <label for="address">Address</label>
+        <input type="text" ngModel="{{editPatient?.address}}" name="address" class="form-control" id="address" placeholder="Address">
+    </div>
+     <div class="form-group">
+      <label for="years">Years</label>
+      <input type="text" ngModel="{{editPatient?.years}}" name="years" class="form-control" id="years" placeholder="Years">
+    </div>
+       <div class="modal-footer">
+          <button (click)="showInfoPatientBody(GetCasePatient())" type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+          <button (click)="onUpdatePatient(editForm.value,editForm.value.id)" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+       </div>
+    </form>
+ </div>
+   </ng-template>
+
+ <!-- Delete Modal -->
+<div class="modal fade" id="deletePatientModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="deleteModelLabel">Delete Patient</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <p>Are you sure you want to delete patient?</p>
+           <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button (click)="onDeletePatient(deletePatient.id);Reload()" class="btn btn-danger" data-dismiss="modal">Yes</button>
+           </div>
+        </div>
+     </div>
+  </div>
+</div>
